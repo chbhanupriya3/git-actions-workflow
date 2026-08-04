@@ -1,0 +1,30 @@
+name: Runner-info
+on:
+  workflow_dispatch:
+jobs:
+    runners-specs:
+        runs-on: ubuntu-latest
+        steps: 
+        -   name: Runner context info
+            run: |
+                echo "============================="          
+                echo "Runner context Info"
+                echo "OS:           ${{runner.os}}"
+                echo "Architecture: ${{runner.arch}}"
+                echo "Workspace:    ${{runner.workspace}}"
+                echo "=============================="
+        -   name: Machine specification
+            run: |
+                echo "===== OS Info ====="
+                cat /etc/os-release
+                echo "===== CPU Info ====="
+                nproc
+                lscpu
+                echo "===== Memory ====="
+                free -h
+                echo "===== Disk Space ====="
+                df -h        
+        -   name: Pre installed software
+            run: |
+                echo "Docker version: $(docker --version)"        
+                echo "Node version: $(node --version)"
