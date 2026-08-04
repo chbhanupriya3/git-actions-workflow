@@ -2,11 +2,13 @@ name: Workflow2
 on:
   workflow_run:
     workflows:
-    -   workflow1    
+    -   workflow1 
+    types:
+    -   completed       
 
 jobs:
     job1:
         runs-on: ubuntu-latest
         steps:
         -   name: Print details
-            run: echo "This workflow is triggered because of workflow1 completed."
+            run: sleep 30
