@@ -10,5 +10,5 @@ jobs:
                 echo "cloning the repo"          
                 git clone https://github.com/${{github.repository}}.git
                 echo "list of files after clone"
-                ls -R
+                ls -la
                 pwd
