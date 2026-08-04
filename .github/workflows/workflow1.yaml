@@ -10,5 +10,7 @@ jobs:
             run: |
                 echo "Actor is: ${{github.actor}}"        
                 echo "Commit SHA is: ${{github.sha}}"
-        -   name: sleep
-            run: sleep 30        
+        -   name: step 2
+            run: |
+                echo "Intentionally failing this"
+                exit 1     
