@@ -9,8 +9,4 @@ jobs:
         -   name: print name
             run: |
                 echo "Actor is: ${{github.actor}}"        
-                echo "Commit SHA is: ${{github.sha}}"
-        -   name: step 2
-            run: |
-                echo "Intentionally failing this"
-                exit 1     
+                echo "Commit SHA is: ${{github.sha}}"     
