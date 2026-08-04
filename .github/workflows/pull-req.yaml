@@ -1,0 +1,14 @@
+name: Pull Request
+on:
+    pull_request:
+
+jobs: 
+    show-information:
+        name: Push Trigger Info
+        runs-on: ubuntu-latest
+        steps:
+        - name: show triggered information
+          run: |
+            echo "======================================="  
+            echo "Event Name is :  ${{ github.event_name}}"
+            echo "========================================"
