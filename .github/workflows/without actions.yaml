@@ -12,3 +12,5 @@ jobs:
                 echo "list of files after clone"
                 ls -la
                 pwd
+        - name: Java Default Version
+            run: java -version || echo "Java is not installed"        
