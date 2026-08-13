@@ -12,5 +12,4 @@ jobs:
                 echo "*****************************************"
                 echo "ref-name == main : ${{github.ref_name == 'main'}}"
                 echo "ref-name != main : ${{github.ref_name != 'main'}}"
-                echo run-numder > 0    : ${{github.run_number > 0}}
-                
+                echo "run-numder > 0    : ${{github.run_number > 0}}"
