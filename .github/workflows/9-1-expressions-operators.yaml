@@ -10,6 +10,13 @@ jobs:
                 echo  "****************************************"
                 echo  "Comparision Operator"
                 echo "*****************************************"
-                echo "ref-name == main : ${{github.ref_name == 'main'}}"
-                echo "ref-name != main : ${{github.ref_name != 'main'}}"
-                echo "run-numder > 0    : ${{github.run_number > 0}}"
+                echo "ref_name == main : ${{github.ref_name == 'main'}}"
+                echo "ref_name != main : ${{github.ref_name != 'main'}}"
+                echo "run_number > 0    : ${{github.run_number > 0}}"
+
+#            - name: Logical operator
+#             run: |
+#                echo  "****************************************"
+#                echo  " Logical Operator"
+#                echo "*****************************************"     
+                                 
