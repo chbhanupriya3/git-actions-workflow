@@ -21,4 +21,5 @@ jobs:
             name: build-artifact
             path: target/*.jar
             retention-days: 7
+            if-no-files-found: error
                     
