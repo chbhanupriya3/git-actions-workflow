@@ -19,6 +19,6 @@ jobs:
           uses: actions/upload-artifact@v4
           with:
             name: build-artifact
-            path: targret/*.jar
+            path: target/*.jar
             retention-days: 7
                     
