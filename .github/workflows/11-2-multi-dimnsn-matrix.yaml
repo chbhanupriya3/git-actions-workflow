@@ -11,6 +11,10 @@ jobs:
                 exclude:
                     - java-version: '17'
                       os: windows-latest
+                include:
+                    - java-version: '21'
+                      os: ubuntu-latest
+                      is-primary: true      
         name: Test - Java ${{matrix.java-version}}  on ${{matrix.os}}
         runs-on: ${{matrix.os}}      
         steps:
@@ -22,7 +26,13 @@ jobs:
             java-version: ${{matrix.java-version}}
             distribution: temurin
             cache: maven
-        - run: mvn test  
+        - run: mvn test 
+          name: Running maven tests
+        - name: Primary Combinationm Maker
+          if: matrix.is-primary == true
+          run: |
+            echo "This is the primary test combo"   
+            echo "java ${{matrix.java-version}} on ${{matrix.os}}"
         - name: Print Matrix Combination
           run: |
             echo "Java-version: ${{matrix.java-version}}"
