@@ -8,7 +8,10 @@ jobs:
             matrix:
                 java-version: ['17', '21']
                 os: ['ubuntu-latest', 'windows-latest']
-        name: Test - Java ${{matrix.java-version}}  
+                exclude:
+                    - java-version: '17'
+                      os: windows-latest
+        name: Test - Java ${{matrix.java-version}}  on ${{matrix.os}}
         runs-on: ${{matrix.os}}      
         steps:
         - name: Checkout code
