@@ -1,0 +1,26 @@
+name: 11-2-Multi-Dimension-Matrix
+on:
+    workflow_dispatch:
+jobs:
+    Test:
+        strategy:
+            matrix:
+                java-version: ['17', '21']
+                os: ['ubuntu-latest', 'windows-latest']
+        name: Test - Java ${{matrix.java-version}}  
+        runs-on: ${{matrix.os}}      
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+        - name: Setup Java ${{matrix.java-version}}
+          uses: actions/setup-java@v4  
+          with: 
+            java-version: ${{matrix.java-version}}
+            distribution: temurin
+            cache: maven
+        - run: mvn test  
+        - name: Print Matrix Combination
+          run: |
+            echo "Java-version: ${{matrix.java-version}}"
+            echo "OS          : ${{matrix.os}}"
+            echo "Runner OS   : ${{runner.os}}"
