@@ -4,6 +4,7 @@ on:
 jobs:
     Test:
         strategy:
+            fail-fast: false
             matrix:
                 java-version: ['17', '21']
                 os: ['ubuntu-latest', 'windows-latest']
