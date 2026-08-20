@@ -17,7 +17,7 @@ jobs:
             java-version: ${{matrix.java-version}} 
             distribution: temurin
             cache: maven
-          run: mvn test
+        - run: mvn test
         - name: Print Matrix Value
           run: |
            echo "Running on Java ${{matrix.java-version}} "    
