@@ -10,7 +10,10 @@ jobs:
             url: https://dev.i27academy.com
         steps:
             - run: |
-                echo " Deploying to Development Environment"    
+                echo " Deploying to Development Environment"  
+                echo "=============================="  
+                echo "Staging DB URL: ${{ vars.STAGING_DB_URL }}"
+                echo "=============================="                  
     deploy-stage:
         name: Deploy to Staging
         runs-on: ubuntu-latest
@@ -20,7 +23,10 @@ jobs:
             url: https://stage.i27academy.com
         steps:
             - run: |
-                echo "Deploying to Stage Environment"    
+                echo "Deploying to Stage Environment"  
+                echo "=============================="  
+                echo "Staging DB URL: ${{vars.STAGING_DB_URL}}"
+                echo "=============================="
     deploy-prod:
         name: Deploy to Production
         runs-on: ubuntu-latest
@@ -31,3 +37,6 @@ jobs:
         steps:
             - run: |
                 echo "Deploying to Production"    
+                echo "======================="
+                echo "PROD DB URL: ${{vars.PROD_DB_URL}}"
+                echo "======================="

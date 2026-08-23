@@ -10,7 +10,7 @@ jobs:
                 os: ['ubuntu-latest', 'windows-latest']
                 exclude:
                     - java-version: '17'
-                      os: windows-latest
+                      os: windows-latest 
                 include:
                     - java-version: '21'
                       os: ubuntu-latest
