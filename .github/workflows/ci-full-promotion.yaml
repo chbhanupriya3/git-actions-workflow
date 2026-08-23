@@ -24,6 +24,7 @@ on:
         - 'src/**'
         - 'pom.xml'
         - 'Dockerfile' 
+    workflow_dispatch:    
 env:
     DOCKER_IMAGE_NAME: 'chbhanupriya3/i27-devops-dashboard'        
 
@@ -55,7 +56,7 @@ jobs:
           id: tag
           run: |
             echo "=======================Creating Docker Image Tag======================"    
-            echo "value=${{github.sha}}" >> GITHUB_OUTPUT
+            echo "value=${{github.sha}}" >> $GITHUB_OUTPUT
     ##---------------------------Docker Build and Push ----------------------------      
     docker-build-push:
         name: docker build and push
