@@ -22,5 +22,5 @@ COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8000
 
-# Entrypoint
+# Entrypoint ------
 ENTRYPOINT ["java", "-jar", "app.jar"]
