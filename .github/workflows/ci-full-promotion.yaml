@@ -34,7 +34,7 @@ jobs:
         name: build test and package
         runs-on: ubuntu-latest
         outputs:
-            iamge tag: ${{steps.tag.outputs.value}}
+            image-tag: ${{steps.tag.outputs.value}}
         steps:
         - name: Checkout Code
           uses: actions/checkout@v3
