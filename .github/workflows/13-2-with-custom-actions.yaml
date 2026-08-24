@@ -30,7 +30,7 @@ jobs:
     build:
         name: build
         runs-on: ubuntu-latest
-        needs: test
+        needs: Test
         steps:
         - name: Checkout code            
           uses: actions/checkout@v3
