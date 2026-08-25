@@ -1,0 +1,147 @@
+# ===============================================
+# Write a workflow having dev -> staging > producion pipeline
+# with approval gate on production
+# Environments:
+#   development -> no protection
+#   staging     -> no protection
+#   production  -> requiere reviewers: your github username 
+#                   deployment branches: main only
+# Finally i should be able to have summary
+# development url :
+# stagin url:
+# production url:
+# Docker build.
+# image tag: commit sha value , in that only 7 characters should be printing  
+# docker push   
+# ===============================================
+
+name: Build, Test, Push Docker Image - Custom Action
+on:
+    push:
+        branches:
+        - master
+        paths:
+        - 'src/**'
+        - 'pom.xml'
+        - 'Dockerfile' 
+    workflow_dispatch:    
+env:
+    DOCKER_IMAGE_NAME: 'chbhanupriya3/i27-devops-dashboard'        
+
+jobs:
+    ##--------------------------1. Build and package ------------------------
+    build:
+        name: build test and package
+        runs-on: ubuntu-latest
+        outputs:
+            image-tag: ${{steps.tag.outputs.value}}
+        steps:
+        - name: Checkout Code
+          uses: actions/checkout@v3
+        - name: Setup Java
+          uses: actions/setup-java@v3  
+          with:
+            java-version: '21'
+            distribution: temurin
+            cache: maven
+        - name: Build Test and package      
+          run: mvn clean package
+        - name: Upload Build Artifact
+          uses: actions/upload-artifact@v4  
+          with:
+            name: build-artifact
+            path: tartget/*.jar
+            retention-days: 7
+        - name: Docker Image tag
+          id: tag
+          run: |
+            echo "=======================Creating Docker Image Tag======================"    
+            echo "value=${{github.sha}}" >> $GITHUB_OUTPUT
+    ##---------------------------2. Docker Build and Push ----------------------------      
+    docker-build-push:
+        name: docker build and push
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+        - name: Checkout Code
+          uses: actions/checkout@v3
+        - name: Docker Build and Push
+          uses: ./.github/actions/docker-build-push
+          with:
+            registry-username: ${{ vars.DOCKERHUB_USERNAME}}
+            registry-password: ${{ secrets.DOCKERHUB_TOKEN}}
+            image-name: ${{ env.DOCKER_IMAGE_NAME }}
+            image-tag: ${{ needs.build.outputs.image-tag}}
+                
+                
+
+
+
+        
+ ##------------------------------------3. Deploy to Dev -------------------------------------
+    deploy-dev:
+        name: Deploy to Dev
+        runs-on: ubuntu-latest
+        needs: [build, docker-build-push]           
+        environment:
+            name: development
+            url: https://dev.i27dashboard.com
+        steps:
+        - name: Deploy to Development   
+          run: |
+            echo "=============================================================="
+            echo "=======================Deploying to Dev======================="
+            echo "=============================================================="
+            echo "Deployed ✅"
+ ##------------------------------------4. Deploy to Stage -------------------------------------
+    deploy-stage:
+        name: Deploy to stage
+        runs-on: ubuntu-latest
+        needs: [build, docker-build-push, deploy-dev]           
+        environment:
+            name: staging
+            url: https://stage.i27dashboard.com
+        steps:
+        - name: Deploy to Stage   
+          run: |
+            echo "=============================================================="
+            echo "=======================Deploying to Stage======================="
+            echo "=============================================================="
+            echo "Deployed ✅"           
+ ##------------------------------------5. Deploy to Prod -------------------------------------
+    deploy-prod:
+        name: Deploy to prod
+        runs-on: ubuntu-latest
+        needs: [build, docker-build-push, deploy-dev, deploy-stage]           
+        environment:
+            name: production
+            url: https://prod.i27dashboard.com
+        steps:
+        - name: Deploy to Prod   
+          run: |
+            echo "=============================================================="
+            echo "=======================Deploying to Prod======================="
+            echo "=============================================================="
+            echo "Deployed ✅"        
+    Summary:
+        name: Deployment Summary
+        runs-on: ubuntu-latest
+        needs: [build, docker-build-push, deploy-dev, deploy-stage, deploy-prod ]   
+        if: always()             
+        steps:
+        - name: Overall Summary
+          run: |
+            echo "## Deployment Summary"       >> $GITHUB_STEP_SUMMARY
+            echo "| Environment | STATUS | URL | " >> $GITHUB_STEP_SUMMARY
+            echo "| ----------  | ------ | --- |"   >> $GITHUB_STEP_SUMMARY
+            echo "| Development | ${{needs.deploy-dev.result}} | https://dev.i27dashboard.com |" >> $GITHUB_STEP_SUMMARY
+            echo "| Staging | ${{needs.deploy-stage.result}} | https://stage.i27dashboard.com |" >> $GITHUB_STEP_SUMMARY
+            echo "| Production  | ${{needs.deploy-prod.result}} | https://prod.i27dashboard.com |" >> $GITHUB_STEP_SUMMARY
+
+
+
+
+    #deploy to dev:
+    #deploy to stage:
+    #deploy to prod:                
+
