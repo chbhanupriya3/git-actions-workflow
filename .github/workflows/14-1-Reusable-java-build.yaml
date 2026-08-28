@@ -1,0 +1,29 @@
+name: 14-1-Reusable-java-build
+on:
+    workflow_call:
+     inputs:
+        java-version:
+            description: Which java to use
+            required: false
+            type: string  
+            default: '21'
+        run-tests:
+            description: Need to run tests?
+            required: false
+            type: boolean
+            default: true    
+
+
+
+jobs:
+    java-build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v3    
+        - name: Build and test
+          uses: chbhanupriya3/i27academy-devops-actions/.github/actions/java-build@main
+          with:
+            java-version: ${{ inputs.java-version }}
+            run-tests:    ${{ inputs.run-tests }}
+
